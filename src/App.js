@@ -1,11 +1,22 @@
-import { useState, useMemo } from "react";
+import React, { useMemo, useState } from "react";
+import "./App.css";
 
 function App() {
-  const [text, setText] = useState("");
+  const [text, setText] = useState(null);
 
-  const isValid = useMemo(() => {
-    // Use a regular expression to check if the text is a valid number
-    return /^\d+$/.test(text);
+  function check(v) {
+    let r = /^\d+$/;
+    if (text) {
+      if (v.match(r)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  const boo = useMemo(() => {
+    return check(text);
   }, [text]);
 
   return (
@@ -14,12 +25,14 @@ function App() {
         <input
           className="input is-large"
           type="text"
-          placeholder="Enter number..."
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          placeholder="Enter number..."
+          onChange={(e) => {
+            setText(e.target.value);
+          }}
         />
         <span className="icon is-small is-right">
-          <i className={`fas ${isValid ? "fa-check" : "fa-times"}`} />
+          <i className={boo ? "fas fa-check" : "fas fa-times"} />
         </span>
       </div>
     </div>
