@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 
 function App() {
   const [text, setText] = useState("");
+
   const isValid = useMemo(() => {
     // Use a regular expression to check if the text is a valid number
     return /^\d+$/.test(text);
