@@ -1,14 +1,28 @@
-import { useMemo, useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import "./App.css";
 
 function App() {
   const [text, setText] = useState("");
 
-  const isValidNumber = useMemo(() => {
-    const numRegex = /^[0-9]*$/;
-    return numRegex.test(text);
-  }, [text]);
+  const calculate = (text) => {
+    const validRegex = new RegExp(/[1-9]/);
 
+    if (validRegex.test(text)) {
+      if (text < 15) {
+        return text;
+      }
+    } else {
+      return false;
+    }
+  };
+  const onChange = (e) => {
+    setText(e.target.value);
+  };
+
+  const memoCalculate = useMemo(() => calculate(text), [text]);
+  useEffect(() => {
+    console.log(memoCalculate, text);
+  }, [memoCalculate, text]);
   return (
     <div className="App">
       <div className="control has-icons-right">
@@ -16,11 +30,11 @@ function App() {
           className="input is-large"
           type="text"
           placeholder="Enter number..."
+          onChange={onChange}
           value={text}
-          onChange={(e) => setText(e.target.value)}
         />
         <span className="icon is-small is-right">
-          <i className={`fas ${isValidNumber ? "fa-check" : "fa-times"}`} />
+          <i className={`${memoCalculate ? "fas fa-check" : "fas fa-times"}`} />
         </span>
       </div>
     </div>
